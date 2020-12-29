@@ -1,0 +1,99 @@
+class CoffeeMachine:
+
+    def __init__(self):
+        self.ml_of_water = 400
+        self.ml_of_milk = 540
+        self.gr_of_beans = 120
+        self.max_cup_of_coffee = 9
+        self.money = 550
+
+        self.water_for_coffee = [250, 350, 200]
+        self.milk_for_coffee = [0, 75, 100]
+        self.beans_for_coffee = [16, 20, 12]
+        self.money_for_coffee = [4, 7, 6]
+
+        self.action = None
+        self.choose = None
+
+    def choosing_action(self):
+        while True:
+            print('\nWrite action (buy, fill, take, remaining, exit):')
+            self.action = input()
+
+            if self.action == 'exit':
+                break
+
+            if self.action == 'buy':
+                CoffeeMachine.choosing_coffee_type(self)
+            elif self.action == 'fill':
+                CoffeeMachine.fill_machine(self)
+            elif self.action == 'take':
+                CoffeeMachine.take_money(self)
+            elif self.action == 'remaining':
+                CoffeeMachine.display(self)
+
+    def choosing_coffee_type(self):
+        print('\nWhat do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:')
+        self.choose = input()
+
+        if self.choose == 'back':
+            return
+
+        if self.choose == '1' or '2' or '3':
+            CoffeeMachine.checking(self)
+
+    def checking(self):
+        if self.ml_of_water - self.water_for_coffee[int(self.choose) - 1] < 0:
+            print('Sorry, not enough water!')
+            return
+        else:
+            self.ml_of_water -= self.water_for_coffee[int(self.choose) - 1]
+
+        if self.ml_of_milk - self.milk_for_coffee[int(self.choose) - 1] < 0:
+            print('Sorry, not enough milk!')
+            return
+        else:
+            self.ml_of_milk -= self.milk_for_coffee[int(self.choose) - 1]
+
+        if self.gr_of_beans - self.beans_for_coffee[int(self.choose) - 1] < 0:
+            print('Sorry, not enough coffee beans!')
+            return
+        else:
+            self.gr_of_beans -= self.beans_for_coffee[int(self.choose) - 1]
+
+        if self.max_cup_of_coffee - 1 < 0:
+            print('Sorry, not enough coffee cups!')
+            return
+        else:
+            self.max_cup_of_coffee -= 1
+            self.money += self.money_for_coffee[int(self.choose) - 1]
+
+        print('I have enough resources, making you a coffee!')
+
+    def fill_machine(self):
+        print('\nWrite how many ml of water do you want to add:')
+        self.ml_of_water += int(input())
+
+        print('Write how many ml of milk do you want to add:')
+        self.ml_of_milk += int(input())
+
+        print('Write how many grams of coffee beans do you want to add:')
+        self.gr_of_beans += int(input())
+
+        print('Write how many disposable cups of coffee do you want to add:')
+        self.max_cup_of_coffee += int(input())
+
+    def take_money(self):
+        print('\nI gave you $' + str(self.money))
+        self.money = 0
+
+    def display(self):
+        print('\nThe coffee machine has:')
+        print(self.ml_of_water, 'of water')
+        print(self.ml_of_milk, 'of milk')
+        print(self.gr_of_beans, 'of coffee beans')
+        print(self.max_cup_of_coffee, 'of disposable cups')
+        print('$' + str(self.money), 'of money')
+
+coffee1 = CoffeeMachine()
+coffee1.choosing_action()
